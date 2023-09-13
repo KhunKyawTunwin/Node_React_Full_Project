@@ -1,45 +1,46 @@
-//
-import _ from "lodash";
-import { withRouter } from "react-router-dom";
-import { connect } from "react-redux";
-import formField from "./formField";
-import * as actions from "../../actions";
+// SurveyFormReview shows users their form inputs for review
+import _ from 'lodash';
+import React from 'react';
+import { connect } from 'react-redux';
+import formFields from './formFields';
+import { withRouter } from 'react-router-dom';
+import * as actions from '../../actions';
 
 const SurveyFormReview = ({ onCancel, formValues, submitSurvey, history }) => {
-  const reviewFields = _.map(formField, ({ label, name }) => {
+  const reviewFields = _.map(formFields, ({ name, label }) => {
     return (
       <div key={name}>
         <label>{label}</label>
-        <div>{formValues[name]}</div>
+        <div>
+          {formValues[name]}
+        </div>
       </div>
     );
   });
 
   return (
     <div>
-      <h5>Please Confirm SurveyFormReview</h5>
-
+      <h5>Please confirm your entries</h5>
       {reviewFields}
-
       <button
         className="yellow darken-3 white-text btn-flat"
         onClick={onCancel}
       >
         Back
       </button>
-
       <button
-        className="green darken-1 right btn-flat white-text"
         onClick={() => submitSurvey(formValues, history)}
+        className="green btn-flat right white-text"
       >
-        Send Survey <i className="material-icons right">email</i>
+        Send Survey
+        <i className="material-icons right">email</i>
       </button>
     </div>
   );
 };
 
-function manStateToProps(state) {
+function mapStateToProps(state) {
   return { formValues: state.form.surveyForm.values };
 }
 
-export default connect(manStateToProps, actions)(withRouter(SurveyFormReview));
+export default connect(mapStateToProps, actions)(withRouter(SurveyFormReview));
